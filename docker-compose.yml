@@ -1,0 +1,37 @@
+services:
+  postgres:
+    image: postgres:18
+    container_name: spring-security-jwt-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: spring_security_auth_jwt_db
+      POSTGRES_USER: spring_security_user
+      POSTGRES_PASSWORD: "0000"
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U spring_security_user -d spring_security_auth_jwt_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: spring-security-jwt-pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: sembunly2005@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: "0000"
+    ports:
+      - "5050:80"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+
+volumes:
+  postgres_data:
+  pgadmin_data:
