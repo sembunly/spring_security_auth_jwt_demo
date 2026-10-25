@@ -25,7 +25,7 @@ A REST API demo built with Spring Boot, Spring Security, JWT, and PostgreSQL to 
 ### 1. Clone the Repository
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/sembunly/spring_security_auth_jwt_demo.git
 cd spring_security_auth_jwt_demo
 ```
 
