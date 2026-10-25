@@ -11,5 +11,5 @@ import java.util.Optional;
 public interface RoleRepository extends JpaRepository<Role, Long> {
 
     Optional<Role> findFirstByName(String name);
-    List<Role> findAllByIn(List <String> name); // select from role where name in(''.');
+    List<Role> findAllByNameIn(List <String> name); // select from role where name in(''.');
 }
