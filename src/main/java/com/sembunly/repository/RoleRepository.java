@@ -1,4 +1,15 @@
 package com.sembunly.repository;
 
-public interface RoleRepository {
+import com.sembunly.model.Role;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Optional;
+
+@Repository
+public interface RoleRepository extends JpaRepository<Role, Long> {
+
+    Optional<Role> findFirstByName(String name);
+    List<Role> findAllByIn(List <String> name); // select from role where name in(''.');
 }
