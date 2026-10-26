@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.Collection;
 
 @Getter
@@ -13,7 +12,7 @@ import java.util.Collection;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "tbl_user") // it will be generated new table in DB
+@Table(name = "tbl_role")
 public class Role implements Serializable {
 
     @Id
@@ -24,5 +23,5 @@ public class Role implements Serializable {
     private String name;
 
     @ManyToMany(mappedBy = "roles")
-    private Collection<User>users;
+    private Collection<User> users;
 }
