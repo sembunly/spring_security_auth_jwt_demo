@@ -36,6 +36,14 @@ public class ConfigCustomConfigFilterChain {
                 .csrf(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(auth -> auth
+                                .requestMatchers(
+                                        "/swagger-ui/**",
+                                        "/swagger-ui.html",
+                                        "/v3/api-docs/**"
+                                ).permitAll()
+                        // Keep your existing authentication rules below
+                )
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/v1/public/account/**").permitAll()
                         .requestMatchers("/api/v1/public/user/**").hasAnyAuthority("USER", "ADMIN")
