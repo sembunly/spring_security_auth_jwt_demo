@@ -13,6 +13,7 @@ import com.sembunly.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -27,19 +28,21 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public ResponseErrorTemplate create(UserRequest userRequest) {
-        // TODO: 25/10/2026 validation data of user request
         this.userRequestValidation(userRequest);
 
-        List<Role> roles = roleRepository.findAllByNameIn(userRequest.roles());
+        // Public registration must never allow a client to choose an elevated role.
+        Role userRole = roleRepository.findFirstByName("USER")
+                .orElseGet(() -> roleRepository.save(Role.builder().name("USER").build()));
         User user = User.builder()
                 .username(userRequest.username())
-                .password(userRequest.password())
+                .password(passwordEncoder.encode(userRequest.password()))
                 .email(userRequest.email())
                 .fullName(userRequest.fullName())
-                .roles(roles)
+                .roles(List.of(userRole))
                 .loginAttempt(0)
                 .status(Constant.ACT)
                 .created(LocalDateTime.now())
@@ -68,14 +71,13 @@ public class UserServiceImpl implements UserService {
     private ResponseErrorTemplate userMapper(User user) {
         UserResponse userResponse = new UserResponse(
                 user.getUsername(),
-                user.getPassword(),
                 user.getEmail(),
                 user.getFullName(),
                 user.getRoles().stream().map(Role::getName).toList(),
                 user.getStatus(),
                 user.getLoginAttempt(),
                 user.getCreated(),
-                user.getCreated()
+                user.getUpdated()
         );
 
         return new ResponseErrorTemplate(Constant.SUC_MSG, Constant.SUC_CODE, userResponse);
@@ -83,14 +85,16 @@ public class UserServiceImpl implements UserService {
 
     private void userRequestValidation(UserRequest userRequest) {
 
-        if (ObjectUtils.isEmpty(userRequest.password())) {
-            log.warn("Password must not be null or blank.");
+        if (userRequest == null
+                || ObjectUtils.isEmpty(userRequest.username())
+                || ObjectUtils.isEmpty(userRequest.password())
+                || ObjectUtils.isEmpty(userRequest.email())) {
+            log.warn("Username, password, and email are required.");
             throw new CustomMessageException(
-                    "Password must not be null or blank.", String.valueOf(HttpStatus.BAD_REQUEST.value())
+                    "Username, password, and email are required.", String.valueOf(HttpStatus.BAD_REQUEST.value())
             );
         }
 
-        // TODO 25/10/2026 validate username or email duplicate
         Optional<User> user = userRepository.findByUsernameOrEmail(
                 userRequest.username(),
                 userRequest.email()
@@ -103,15 +107,5 @@ public class UserServiceImpl implements UserService {
             );
         }
 
-        // TODO 25/10/2026 validate username or email duplicate
-        List<String> roles = roleRepository.findAll().stream().map(Role::getName).toList();
-        for (var role : userRequest.roles()) {
-            if(!roles.contains(role)){
-                log.warn("Role is invalid request.");
-                throw new CustomMessageException(
-                        "Row is invalid.", String.valueOf(HttpStatus.BAD_REQUEST.value())
-                );
-            }
-        }
     }
 }
