@@ -33,7 +33,7 @@ public class User {
 
     private String status;
 
-    @ManyToMany(mappedBy = "login_attempt")
+    @Column(name = "login_attempt", nullable = false)
     private int loginAttempt;
 
     @Column(updatable = false)
