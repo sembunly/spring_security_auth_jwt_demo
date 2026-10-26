@@ -68,8 +68,19 @@ public class UserServiceImpl implements UserService {
                 .orElse(new ResponseErrorTemplate(msg, String.valueOf(HttpStatus.NOT_FOUND.value()), new Object()));
     }
 
+    @Override
+    public List<UserResponse> findAll() {
+        return userRepository.findAll().stream()
+                .map(this::toUserResponse)
+                .toList();
+    }
+
     private ResponseErrorTemplate userMapper(User user) {
-        UserResponse userResponse = new UserResponse(
+        return new ResponseErrorTemplate(Constant.SUC_MSG, Constant.SUC_CODE, toUserResponse(user));
+    }
+
+    private UserResponse toUserResponse(User user) {
+        return new UserResponse(
                 user.getUsername(),
                 user.getEmail(),
                 user.getFullName(),
@@ -79,8 +90,6 @@ public class UserServiceImpl implements UserService {
                 user.getCreated(),
                 user.getUpdated()
         );
-
-        return new ResponseErrorTemplate(Constant.SUC_MSG, Constant.SUC_CODE, userResponse);
     }
 
     private void userRequestValidation(UserRequest userRequest) {
