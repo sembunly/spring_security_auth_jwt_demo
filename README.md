@@ -1,6 +1,6 @@
 # Spring Security Auth JWT Demo
 
-A REST API demo built with Spring Boot, Spring Security, JWT, and PostgreSQL to demonstrate secure authentication and role-based authorization.
+A REST API demo built with Spring Boot, Spring Security, JWT, and PostgreSQL for secure authentication and role-based authorization.
 
 ## Tech Stack
 
@@ -8,18 +8,19 @@ A REST API demo built with Spring Boot, Spring Security, JWT, and PostgreSQL to 
 - Spring Boot
 - Spring Security
 - Spring Data JPA
-- JSON Web Token (JWT)
+- JWT
 - PostgreSQL
 - Maven
 - Docker & Docker Compose
 - Lombok
+- Springdoc OpenAPI (Swagger UI)
 
 ## Getting Started
 
 ### Prerequisites
 
 - Java 21
-- Maven
+- Maven or Maven Wrapper
 - Docker Desktop
 
 ### 1. Clone the Repository
@@ -41,47 +42,37 @@ docker compose up -d
 ./mvnw spring-boot:run
 ```
 
-Or use Maven:
+Or use `mvn spring-boot:run`.
+
+### 4. Access Services
+
+- API: [http://localhost:8080](http://localhost:8080)
+- Swagger UI: [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
+- OpenAPI JSON: [http://localhost:8080/v3/api-docs](http://localhost:8080/v3/api-docs)
+- pgAdmin: [http://localhost:5050](http://localhost:5050)
+
+## Configuration
+
+| Variable             | Description            |
+| -------------------- | ---------------------- |
+| `JWT_SECRET`         | JWT signing secret     |
+| `DB_PASSWORD`        | PostgreSQL password    |
+| `APP_ADMIN_USERNAME` | Initial admin username |
+| `APP_ADMIN_EMAIL`    | Initial admin email    |
+| `APP_ADMIN_PASSWORD` | Initial admin password |
 
 ```bash
-mvn spring-boot:run
+export APP_ADMIN_USERNAME=sembunly
+export APP_ADMIN_EMAIL=sembunly2005@gmail.com
+export APP_ADMIN_PASSWORD='0000'
+export DB_PASSWORD='0000'
 ```
 
-### 4. Access the Application
+## Reference Documentation
 
-- API: `http://localhost:8080`
-- pgAdmin: `http://localhost:5050`
-
-
-
-### Reference Documentation
-
-For further reference, please consider the following sections:
-
-* [Official Apache Maven documentation](https://maven.apache.org/guides/index.html)
-* [Spring Boot Maven Plugin Reference Guide](https://docs.spring.io/spring-boot/4.1.2/maven-plugin)
-* [Create an OCI image](https://docs.spring.io/spring-boot/4.1.2/maven-plugin/build-image.html)
-* [Spring Data JPA](https://docs.spring.io/spring-boot/4.1.2/reference/data/sql.html#data.sql.jpa-and-spring-data)
-* [Spring Security](https://docs.spring.io/spring-boot/4.1.2/reference/web/spring-security.html)
-* [Spring Web](https://docs.spring.io/spring-boot/4.1.2/reference/web/servlet.html)
-
-### Guides
-
-The following guides illustrate how to use some features concretely:
-
-* [Accessing Data with JPA](https://spring.io/guides/gs/accessing-data-jpa/)
-* [Securing a Web Application](https://spring.io/guides/gs/securing-web/)
-* [Spring Boot and OAuth2](https://spring.io/guides/tutorials/spring-boot-oauth2/)
-* [Authenticating a User with LDAP](https://spring.io/guides/gs/authenticating-ldap/)
-* [Building a RESTful Web Service](https://spring.io/guides/gs/rest-service/)
-* [Serving Web Content with Spring MVC](https://spring.io/guides/gs/serving-web-content/)
-* [Building REST services with Spring](https://spring.io/guides/tutorials/rest/)
-
-### Maven Parent overrides
-
-Due to Maven's design, elements are inherited from the parent POM to the project POM.
-While most of the inheritance is fine, it also inherits unwanted elements like `<license>` and `<developers>` from the
-parent.
-To prevent this, the project POM contains empty overrides for these elements.
-If you manually switch to a different parent and actually want the inheritance, you need to remove those overrides.
-
+- [Spring Boot](https://docs.spring.io/spring-boot/index.html)
+- [Spring Security](https://docs.spring.io/spring-security/reference/)
+- [Spring Data JPA](https://docs.spring.io/spring-data/jpa/reference/)
+- [Springdoc OpenAPI](https://springdoc.org/)
+- [Maven](https://maven.apache.org/guides/index.html)
+- [Docker](https://docs.docker.com/)
