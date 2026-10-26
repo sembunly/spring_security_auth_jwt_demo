@@ -6,6 +6,10 @@
     jwt:
       secret: ${JWT_SECRET:local-dev-only-secret-key-replace-before-deploying-1234567890}
       expiration-seconds: 3600
+    admin:
+      username: ${APP_ADMIN_USERNAME:}
+      email: ${APP_ADMIN_EMAIL:}
+      password: ${APP_ADMIN_PASSWORD:}
 
   spring:
     datasource:
